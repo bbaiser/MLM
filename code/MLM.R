@@ -8,7 +8,7 @@ library(lme4)
 
 # use file "MLM_dataset.csv"
 
-h <- read.csv("MLM_dataset.csv")
+h <- read.csv("data/MLM_dataset.csv")
 
 # remove sites with no species
 
@@ -84,7 +84,7 @@ z = glmer(PRESENCE ~ (1 | SPP) + Elevation + Elevation2 + (0 + Elevation | SPP) 
   family = binomial,
   data = hh
 )
-
+summary(z)
 # compute ranef pvalues
 #Without elevation
 z1 = glmer(PRESENCE ~ (1 | SPP) + Elevation + Elevation2 +

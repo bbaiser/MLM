@@ -6,7 +6,7 @@ library(lme4)
 
 nreps <- 20
 
-ddddd
+
 
 # binary or count data
 binaryflag <- T
@@ -37,8 +37,9 @@ for(rep in 1:nreps){
 	X <- array(0,c(nx,nsite))
 	for(j in 1:nsite){
 		X[,j] <- C %*% rnorm(nx)
-	}
-	X <- t(X)
+	}}
+	
+X <- t(X)
 
 	for(j in 1:nx) X[,j] <- (X[,j] - mean(X[,j]))/sd(X[,j])
 	cov(X)
@@ -115,7 +116,7 @@ for(rep in 1:nreps){
 	MLM.ranef <- rbind(MLM.ranef, ranef(z))
 	MLM.fixef <- rbind(MLM.fixef, fixef(z))
 	MLM.fixef.pvals <- rbind(MLM.fixef.pvals, summary(z)$coef[,4])
-}
+
 ################################################
 # output results
 

@@ -171,6 +171,13 @@ U <- svd(ss)
 mlm.fit <- MLM.fitted.standard %*% U$v
 mlm.fit <- mlm.fit[, 1:2]
 
+
+
+
+#use princomp for pca
+#MLM_PCA<-princomp(MLM.fitted_scaled)
+#mlm.fit<-MLM_PCA$scores[,1:2]
+
 # environmental variables (only those with random effects)
 envir.vars <- cbind(hh$Elevation, hh$Herb, hh$LITU, hh$Ca, hh$P)
 mlm.envir <- NULL

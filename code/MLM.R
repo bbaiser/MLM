@@ -1,5 +1,6 @@
 library(vegan)
 library(lme4)
+library(lmerTest)
 # library(tidyr)
 
 ################################################
@@ -85,6 +86,7 @@ z = glmer(PRESENCE ~ (1 | SPP) + Elevation + Elevation2 + (0 + Elevation | SPP) 
   data = hh
 )
 summary(z)
+
 # compute ranef pvalues
 #Without elevation
 z1 = glmer(PRESENCE ~ (1 | SPP) + Elevation + Elevation2 +
@@ -151,12 +153,16 @@ MLM.fitted <- array(fitted(z) - fitted(z.r), c(nsite, nspp))
 rownames(MLM.fitted) = c(1:54)
 colnames(MLM.fitted) = names(h)[26:39]
 
-# standardize over spp
+# standardize over spp #this is scalling
 MLM.fitted.standard <- MLM.fitted
 for (j in 1:nspp)
   MLM.fitted.standard[, j] <-
   (MLM.fitted[, j] - mean(MLM.fitted[, j])) /
   sd(MLM.fitted[, j])
+
+
+#or just use the scale function
+#MLM.fitted_scaled<-scale(MLM.fitted)
 # another way to do this??
 
 # browseURL("http://stats.stackexchange.com/questions/134282/relationship-between-svd-and-pca-how-to-use-svd-to-perform-pca")

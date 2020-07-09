@@ -153,7 +153,7 @@ MLM.fitted <- array(fitted(z) - fitted(z.r), c(nsite, nspp))
 rownames(MLM.fitted) = c(1:54)
 colnames(MLM.fitted) = names(h)[26:39]
 
-# standardize over spp #this is scalling
+# standardize over spp #this is scalling (i.e., function scale), see below
 MLM.fitted.standard <- MLM.fitted
 for (j in 1:nspp)
   MLM.fitted.standard[, j] <-

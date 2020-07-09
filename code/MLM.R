@@ -87,6 +87,13 @@ z = glmer(PRESENCE ~ (1 | SPP) + Elevation + Elevation2 + (0 + Elevation | SPP) 
 )
 summary(z)
 
+
+#backtransform predictions to probabilities
+prob.predictions <- 1 / (1 + exp(-fitted(z)))
+prob_matrix<-array(prob.predictions, c(nsite, nspp))#make an array
+rownames(prob_matrix) = c(1:54)#give it rownames
+colnames(prob_matrix) = names(h)[26:39]#and column names
+
 # compute ranef pvalues
 #Without elevation
 z1 = glmer(PRESENCE ~ (1 | SPP) + Elevation + Elevation2 +

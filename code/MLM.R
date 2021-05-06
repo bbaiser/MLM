@@ -1,7 +1,7 @@
 library(vegan)
 library(lme4)
 library(lmerTest)
-# library(tidyr)
+library(tidyr)
 
 ################################################
 # load data
@@ -93,6 +93,8 @@ prob.predictions <- 1 / (1 + exp(-fitted(z)))
 prob_matrix<-array(prob.predictions, c(nsite, nspp))#make an array
 rownames(prob_matrix) = c(1:54)#give it rownames
 colnames(prob_matrix) = names(h)[26:39]#and column names
+
+
 
 # compute ranef pvalues
 #Without elevation

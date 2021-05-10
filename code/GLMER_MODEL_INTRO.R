@@ -104,9 +104,9 @@ pairs(veg.slocum[,6:13], pch=15, cex=0.8,
 # 10 >= VIF >= 5  Moderate
 # VIF > 10        Bad
 
-source("HighstatLib.r")
+source("code/HighstatLibV10.r")
 veg.x <- veg[,6:13]
-X <- corvif(veg.x)
+X <- corvif(veg.x)#In cov2cor(v) : diag(.) had 0 or NA entries; non-finite result is doubtful
 
 veg.x <- veg.x[,-3] #remove Water Surface...don't need it. 
 X <- corvif(veg.x)
@@ -139,6 +139,9 @@ z1 <- glmer(Presence ~ (1|SPP) + BF_2000 + (0 + BF_2000|SPP) +
             data = veg)
 summary(z1)
 
+ranef(z1)$SPP$Elevation
+fixef(z1)
+
 #Without Burn Fequency
 z2 <- glmer(Presence ~ (1|SPP) + BF_2000 +
               poly(Elevation, degree = 2) + (0 + Elevation|SPP) + 
@@ -148,14 +151,37 @@ z2 <- glmer(Presence ~ (1|SPP) + BF_2000 +
             data = veg)
 summary(z2)
 
-#Without Elevation
+#Without Elevation ###this originally contained elevation
 z3 <- glmer(Presence ~ (1|SPP) + BF_2000 + (0 + BF_2000|SPP) +
-              poly(Elevation, degree = 2) + 
               poly(IN_20, degree = 2) + (0 + IN_20|SPP) + 
               (1|Block) + (1|Block:Plot2) + (1|Block:Plot2:Submodule2),
             family = "binomial", 
             data = veg)
 summary(z3)
+logit.predictions<-predict(z3)
+
+prob.predictions <- 1 / (1 + exp(-logit.predictions))
+
+ff<-round(prob.predictions,2)
+hist(ff)
+ranef(z1)$SPP$Elevation
+fixef(z1)
+
+
+install.packages("detectseperation")
+library(brglm2)
+
+sep <- glm(Presence ~ BF_2000 +poly(Elevation, degree = 2) + IN_20 , data = veg,
+                       family = binomial("logit"),
+                       method = "detectseparation")
+summary(sep)
+diag(9,4)
+
+Presence ~ (1|SPP) + BF_2000 + (0 + BF_2000|SPP) +
+  poly(Elevation, degree = 2) + (0 + Elevation|SPP) + 
+  IN_20 + (0 + IN_20|SPP) + 
+  (1|Block) + (1|Block:Plot2) + (1|Block:Plot2:Submodule2),
+family = "binomial",
 
 #Without Inundation
 z4 <- glmer(Presence ~ (1|SPP) + BF_2000 + (0 + BF_2000|SPP) +
